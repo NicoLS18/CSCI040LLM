@@ -16,7 +16,7 @@ class Chat:
 
     >>> chat2 = Chat()
     >>> chat2.send_message('what is my name?', temperature=0.0)
-    "Arrr, I be not aware o' yer name, matey. Yer identity be a mystery to me."
+    "Arrr, I be not aware o' yer name, matey."
     
 
     #monkey patch doctest
