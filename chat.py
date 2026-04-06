@@ -36,8 +36,8 @@ class Chat:
     Farewell, me scurvy monkey friend, may the winds o' fortune blow in yer favor!
     <BLANKLINE>
     '''
-    client = Groq()
     def __init__(self):
+        self.client = Groq()
         self.messages = [
                 {
                     # most important content for sys prompt is length of response
