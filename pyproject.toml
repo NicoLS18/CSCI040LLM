@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cmc-csci005-nicolaslaub"
+version = "0.1.0"
+description = "A pirate-themed LLM chatbot powered by Groq"
+requires-python = ">=3.8"
+dependencies = [
+    "groq",
+    "python-dotenv",
+]
+
+[project.scripts]
+chat = "chat:repl"
+
+[tool.setuptools]
+py-modules = ["chat"]
