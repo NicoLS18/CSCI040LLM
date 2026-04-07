@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cmc-csci005-nicolaslaub"
-version = "0.1.1"
+version = "0.1.2"
 description = "A pirate-themed LLM chatbot powered by Groq"
 requires-python = ">=3.8"
 dependencies = [
