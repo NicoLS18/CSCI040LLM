@@ -1,5 +1,5 @@
 [flake8]
 max-line-length = 99
-exclude = venv,.git,__pycache__,dist,*.egg-info
+exclude = venv,.git,__pycache__,dist,*.egg-info,test_projects
 per-file-ignores =
     chat.py:E501

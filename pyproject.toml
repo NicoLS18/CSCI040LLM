@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-chat = "chat:repl"
+chat = "chat:main"
 
 [tool.setuptools]
 py-modules = ["chat"]

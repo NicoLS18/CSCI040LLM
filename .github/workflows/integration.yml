@@ -17,3 +17,17 @@ jobs:
           I am bob.
           What is my name?
           EOF
+
+      - name: Test CLI argument
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          chat 'say hello in exactly 1 word'
+
+      - name: Test debug flag
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          output=$(chat --debug 'what is 2 plus 2? use the calculate tool')
+          echo "$output"
+          echo "$output" | grep -q '\[tool\]'
