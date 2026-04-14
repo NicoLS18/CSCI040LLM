@@ -1,0 +1,9 @@
+[submodule "test_projects/ebayscraper"]
+	path = test_projects/ebayscraper
+	url = https://github.com/NicoLS18/ebayscraper
+[submodule "test_projects/webpage"]
+	path = test_projects/webpage
+	url = https://github.com/NicoLS18/NicoLS18.github.io
+[submodule "test_projects/markdown-compiler"]
+	path = test_projects/markdown-compiler
+	url = https://github.com/NicoLS18/markdown-compiler

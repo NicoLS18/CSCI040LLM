@@ -2,4 +2,5 @@ groq
 python-dotenv
 pytest
 coverage
+flake8
 supply-chain-attack-poc
