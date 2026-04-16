@@ -10,7 +10,7 @@ A pirate-themed document chat agent powered by the Groq LLM API. Chat naturally 
 
 ## Demo Video
 
-https://youtu.be/Mu8IV-zt29s
+https://youtu.be/w6ZYI5ZImSQ
 
 ## Usage Examples
 
