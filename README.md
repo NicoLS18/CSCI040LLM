@@ -3,10 +3,10 @@
 [![Run Tests](https://github.com/NicoLS18/CSCI040LLM/actions/workflows/tests.yml/badge.svg)](https://github.com/NicoLS18/CSCI040LLM/actions/workflows/tests.yml)
 [![Integration Test](https://github.com/NicoLS18/CSCI040LLM/actions/workflows/integration.yml/badge.svg)](https://github.com/NicoLS18/CSCI040LLM/actions/workflows/integration.yml)
 [![flake8](https://github.com/NicoLS18/CSCI040LLM/actions/workflows/flake8.yml/badge.svg)](https://github.com/NicoLS18/CSCI040LLM/actions/workflows/flake8.yml)
+[![PyPI](https://img.shields.io/pypi/v/cmc-csci005-nicolaslaub)](https://pypi.org/project/cmc-csci005-nicolaslaub/)
+[![codecov](https://codecov.io/gh/NicoLS18/CSCI040LLM/branch/master/graph/badge.svg)](https://codecov.io/gh/NicoLS18/CSCI040LLM)
 
 A pirate-themed document chat agent powered by the Groq LLM API. Chat naturally with files in your project using tools to list directories, read files, search with regex, and perform calculations.
-
-PyPI: https://pypi.org/project/cmc-csci005-nicolaslaub/
 
 ## Demo Video
 

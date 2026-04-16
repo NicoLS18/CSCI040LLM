@@ -22,3 +22,11 @@ jobs:
         run: |
           coverage run -m pytest chat.py tools/ --doctest-modules
           coverage report -m
+          coverage xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
