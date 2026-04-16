@@ -1,6 +1,5 @@
 """Docchat: a document-aware AI agent chatbot powered by the Groq LLM API."""
 import glob
-import io
 import json
 import os
 import subprocess
