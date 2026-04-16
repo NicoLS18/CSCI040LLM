@@ -238,7 +238,8 @@ class Chat:
                     "Write the output in 1-2 sentences. Talk like pirate. "
                     "Only use tools when the user explicitly asks you to list "
                     "files, read files, search files, or calculate something. "
-                    "Never use tools for normal conversation."
+                    "Never use tools for normal conversation. "
+                    "Always use relative paths (never absolute paths) when calling tools."
                 ),
             }
         ]
