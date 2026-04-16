@@ -199,7 +199,7 @@ class Chat:
 
     >>> chat2 = Chat()
     >>> chat2.send_message('what is my name?', temperature=0.0)
-    "I be not aware o' yer name, matey. I be a chatbot, and I don't have any information about ye. If ye want to share yer name with me, I'd be happy to chat with ye about it."
+    "I be not aware o' yer name, matey. I don't keep track o' personal info, so ye'll have to tell me yerself."
 
     >>> len(chat.messages)
     5
@@ -357,6 +357,8 @@ def _handle_slash_command(user_input, chat=None):
     elif cmd == 'load_image':
         if not args:
             return 'Error: load_image requires a file path'
+        if not os.path.isfile(args[0]):
+            return f'Error: file not found: {args[0]}'
         if chat is None:
             return 'Error: load_image requires an active chat session'
         return tools.load_image.load_image(args[0], chat.messages)
@@ -369,8 +371,10 @@ def _make_completer():
 
     >>> completer = _make_completer()
     >>> completer('/l', 0)
+    '/load_image'
+    >>> completer('/l', 1)
     '/ls'
-    >>> completer('/l', 1) is None
+    >>> completer('/l', 2) is None
     True
     >>> completer('/ca', 0)
     '/calculate'
