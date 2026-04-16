@@ -4,7 +4,7 @@ import json
 import os
 import subprocess
 import tempfile
-from groq import Groq
+from groq import Groq, BadRequestError
 from dotenv import load_dotenv
 import tools.calculate
 import tools.ls
@@ -278,7 +278,13 @@ class Chat:
             }
             if self._tools:
                 kwargs['tools'] = self._tools
-            completion = self.client.chat.completions.create(**kwargs)
+            try:
+                completion = self.client.chat.completions.create(**kwargs)
+            except BadRequestError as e:
+                if 'tool_use_failed' in str(e):
+                    completion = self.client.chat.completions.create(**kwargs)
+                else:
+                    raise
             choice = completion.choices[0]
             if choice.finish_reason == 'tool_calls':
                 self.messages.append(choice.message)
