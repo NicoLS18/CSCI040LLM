@@ -12,8 +12,6 @@ PyPI: https://pypi.org/project/cmc-csci005-nicolaslaub/
 
 https://youtu.be/Mu8IV-zt29s
 
-https://github.com/NicoLS18/CSCI040LLM/blob/main/TTSVideo.mov  
-
 ## Usage Examples
 
 ### eBay Scraper (`test_projects/ebayscraper`)
