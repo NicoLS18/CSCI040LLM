@@ -8,6 +8,10 @@ A pirate-themed document chat agent powered by the Groq LLM API. Chat naturally 
 
 PyPI: https://pypi.org/project/cmc-csci005-nicolaslaub/
 
+## Demo Video
+
+https://github.com/NicoLS18/CSCI040LLM/raw/main/TTSVideo.mov
+
 ## Usage Examples
 
 ### eBay Scraper (`test_projects/ebayscraper`)
