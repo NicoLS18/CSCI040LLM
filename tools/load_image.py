@@ -22,7 +22,7 @@ def load_image(path, messages):
     # b'\\x89PNG\\r\\n\\x1a\\n' + b'\\x00' * 8 means,
     # but these tests are not at all obvious the way that tests should be;
     # Better would have been to put a png/jpg/etc file in the test_data
-    # folder that you already have and make the test 
+    # folder that you already have and make the test
     # of the same form as your ls/cat/grep tests;
     # for now, I'm not awarding the extra credit,
     # but you can get the ec on the next project by fixing these tests

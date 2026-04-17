@@ -145,7 +145,7 @@ def _speak(client, text):
         # this code is not "wrong", but it's not very robust;
         # you are relying on the user having certain programs installed,
         # and people on other systems are likely not to have these installed
-        # better is to use a pure python solution 
+        # better is to use a pure python solution
         # (playsound is an easy to use library)
         # the advantage is that you can just list it in your requirements.txt
         # or pyproject.toml and then it will install automatically,
@@ -261,7 +261,7 @@ class Chat:
 
     # ~~this was also supposed to be a tool that can be called automatically by the llm~~
     # Ahh... I see now that it is a tool that can be called,
-    # but I was confused because it's not in the tools folder with the 
+    # but I was confused because it's not in the tools folder with the
     # other tools;
     # like with the image ec, I'm not awarding the points now,
     # but if you fix this then I'll award the points next time
