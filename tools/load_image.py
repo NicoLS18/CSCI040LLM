@@ -16,37 +16,15 @@ def load_image(path, messages):
     Because tool results must be plain text, this function directly appends
     to the shared messages list rather than returning the image data.
 
-    # your doctests here are not great;
-    # I understand what they are doing,
-    # and I also understand the png file format enought to understand what
-    # b'\\x89PNG\\r\\n\\x1a\\n' + b'\\x00' * 8 means,
-    # but these tests are not at all obvious the way that tests should be;
-    # Better would have been to put a png/jpg/etc file in the test_data
-    # folder that you already have and make the test
-    # of the same form as your ls/cat/grep tests;
-    # for now, I'm not awarding the extra credit,
-    # but you can get the ec on the next project by fixing these tests
-    # on the project04
-    >>> import tempfile, os
-    >>> tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
-    >>> _ = tmp.write(b'\\x89PNG\\r\\n\\x1a\\n' + b'\\x00' * 8)
-    >>> tmp.close()
     >>> msgs = []
-    >>> result = load_image(tmp.name, msgs)
-    >>> result.startswith('Image loaded:')
-    True
-    >>> len(msgs) == 1
-    True
+    >>> load_image('test_data/test.png', msgs)
+    'Image loaded: test_data/test.png'
     >>> msgs[0]['role']
     'user'
-    >>> os.unlink(tmp.name)
     >>> load_image('nonexistent_xyz.png', [])
     'Error: file not found: nonexistent_xyz.png'
-    >>> tmp2 = tempfile.NamedTemporaryFile(suffix='.txt', delete=False)
-    >>> tmp2.close()
-    >>> load_image(tmp2.name, [])
+    >>> load_image('test_data/hello.txt', [])
     'Error: unsupported image type: text/plain'
-    >>> os.unlink(tmp2.name)
     """
     if not os.path.isfile(path):
         return f'Error: file not found: {path}'

@@ -10,14 +10,12 @@ A pirate-themed document chat agent powered by the Groq LLM API. Chat naturally 
 
 ## Demo Video
 
-Anytime you have a vidio/figure/codeblock/etc in your README,
-you need a 1-3 sentence title/explanation of the video so that the reader
-knows why they should care about the video/what to expect.
-
-The code below should generate a thumbnail so that it is obvious to the reader what the video does.
+The following video demonstrates the Text to Speech capabilites of the agent using an example that also shows its ls tool.
 [![Video](https://img.youtube.com/vi/w6ZYI5ZImSQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=w6ZYI5ZImSQ)
 
-Replace the ### headers with the explanation of why the example is interesting.
+
+
+This example shows the agent reading files from an eBay scraper project, demonstrating how it can answer questions about unfamiliar codebases and use `/cat` to display file contents.
 
 ```
 chat> what files are in the ebay scraper project?
@@ -28,6 +26,8 @@ chat> /cat test_projects/ebayscraper/README.md
 ...
 ```
 
+This example shows the agent searching HTML files with `/grep`, useful for quickly locating specific tags or content across a web project.
+
 ```
 chat> what html files does the webpage project have?
 Arrr, the webpage project be havin' these HTML files: animals.html, index.html, quiz1.html, visit.html, matey!
@@ -35,6 +35,8 @@ Arrr, the webpage project be havin' these HTML files: animals.html, index.html, 
 chat> /grep <title> test_projects/webpage/index.html
 <title>Zoo</title>
 ```
+
+This example shows the agent explaining a project's configuration by reading its `pyproject.toml`, then using `/ls` to explore the package structure.
 
 ```
 chat> what does the markdown compiler's pyproject.toml say?
