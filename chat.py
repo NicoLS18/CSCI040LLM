@@ -95,7 +95,9 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "compact",
-            "description": "Summarize the chat history to reduce token count.",
+            "description": "Summarize the chat history to reduce token count. This tool should be called whenever the chat history is greater than 50000 tokens or 10 assistant replies.",
+            # a better description should also explain not just what the function does,
+            # but when to actually use the function as well
             "parameters": {
                 "type": "object",
                 "properties": {},
@@ -248,6 +250,12 @@ class Chat:
             }
         ]
 
+    # ~~this was also supposed to be a tool that can be called automatically by the llm~~
+    # Ahh... I see now that it is a tool that can be called,
+    # but I was confused because it's not in the tools folder with the 
+    # other tools;
+    # like with the image ec, I'm not awarding the points now,
+    # but if you fix this then I'll award the points next time
     def compact(self):
         """Summarize the chat history and replace messages with the summary."""
         subagent = Chat(use_tools=False)
