@@ -14,6 +14,10 @@ import tools.load_image
 
 load_dotenv()
 
+# These tool schema definitions should be moved to the corresponding file
+# in the tools/ folder;
+# the general principle is that for any particular function,
+# we want all of the "stuff" about that function in "just one place"
 TOOLS = [
     {
         "type": "function",
@@ -431,8 +435,10 @@ def repl(temperature=0.8, debug=False, tts=False):
     """
     Run the interactive REPL supporting slash commands and LLM chat.
 
-    #monkey patch doctest
-    >>> def monkey_input(prompt, user_inputs=['/cat test_data/hello.txt', '/calculate 6 * 7']):
+    # I simplified your test cases here a bit to make them easier to read
+    # (I didn't actually run them though, so there might be typos)
+    # Overall, these are pretty decent tests
+    >>> def monkey_input(prompt):
     ...     try:
     ...         user_input = user_inputs.pop(0)
     ...         print(f'{prompt}{user_input}')
@@ -441,6 +447,8 @@ def repl(temperature=0.8, debug=False, tts=False):
     ...         raise KeyboardInterrupt
     >>> import builtins
     >>> builtins.input = monkey_input
+
+    >>> user_inputs = ['/cat test_data/hello.txt', '/calculate 6 * 7']
     >>> repl(temperature=0.0)
     chat> /cat test_data/hello.txt
     Hello, World!
@@ -448,29 +456,13 @@ def repl(temperature=0.8, debug=False, tts=False):
     42
     <BLANKLINE>
 
-    #monkey patch doctest for debug mode (slash commands unaffected by debug)
-    >>> def monkey_input_debug(prompt, user_inputs=['/cat test_data/hello.txt']):
-    ...     try:
-    ...         user_input = user_inputs.pop(0)
-    ...         print(f'{prompt}{user_input}')
-    ...         return user_input
-    ...     except IndexError:
-    ...         raise KeyboardInterrupt
-    >>> builtins.input = monkey_input_debug
+    >>> user_inputs = ['/cat test_data/hello.txt']
     >>> repl(temperature=0.0, debug=True)
     chat> /cat test_data/hello.txt
     Hello, World!
     <BLANKLINE>
 
-    #monkey patch doctest for LLM chat path
-    >>> def monkey_input_chat(prompt, user_inputs=['say exactly the word: Arrr']):
-    ...     try:
-    ...         user_input = user_inputs.pop(0)
-    ...         print(f'{prompt}{user_input}')
-    ...         return user_input
-    ...     except IndexError:
-    ...         raise KeyboardInterrupt
-    >>> builtins.input = monkey_input_chat
+    >>> user_inputs=['say exactly the word: Arrr']
     >>> repl(temperature=0.0)  # doctest: +ELLIPSIS
     chat> say exactly the word: Arrr
     ...
@@ -504,8 +496,10 @@ def main():
     parser = argparse.ArgumentParser(description='Docchat: chat with documents')
     parser.add_argument('message', nargs='?', help='Message to send to the LLM')
     parser.add_argument('--debug', action='store_true', help='Print tool calls')
+    # I like that you used a flag here for --tts
     parser.add_argument('--tts', action='store_true', help='Read responses aloud using TTS')
     args = parser.parse_args()
+    # this is a nice, clean way to do the command line message, good job
     if args.message:
         chat = Chat(debug=args.debug, tts=args.tts)
         print(chat.send_message(args.message))

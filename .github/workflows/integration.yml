@@ -33,3 +33,5 @@ jobs:
           output=$(chat --debug 'please use the ls tool to list files in the current directory')
           echo "$output"
           echo "$output" | grep -q '\[tool\]'
+          # excellent use of integration testing here in this file;
+          # most students missed all of this
