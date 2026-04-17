@@ -2,6 +2,24 @@
 import os
 from tools import is_path_safe
 
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "ls",
+        "description": "List files in a directory.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Directory path to list (default '.').",
+                }
+            },
+            "required": [],
+        },
+    },
+}
+
 
 def ls(path='.'):
     """

@@ -1,6 +1,24 @@
 """File content reading tool for the docchat agent."""
 from tools import is_path_safe
 
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "cat",
+        "description": "Read the contents of a file.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "The file path to read.",
+                }
+            },
+            "required": ["path"],
+        },
+    },
+}
+
 
 def cat(path):
     """

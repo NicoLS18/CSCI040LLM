@@ -3,6 +3,24 @@ import base64
 import mimetypes
 import os
 
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "load_image",
+        "description": "Load a local image file so the LLM can see it.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "The path to the image file (JPEG, PNG, GIF, or WebP).",
+                }
+            },
+            "required": ["path"],
+        },
+    },
+}
+
 
 # this was a good use of "memory management" tricks to pass in messages
 # here and then modify it in the function;

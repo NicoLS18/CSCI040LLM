@@ -14,114 +14,26 @@ import tools.load_image
 
 load_dotenv()
 
-# These tool schema definitions should be moved to the corresponding file
-# in the tools/ folder;
-# the general principle is that for any particular function,
-# we want all of the "stuff" about that function in "just one place"
+_COMPACT_SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "compact",
+        "description": "Summarize the chat history to reduce token count. This tool should be called whenever the chat history is greater than 50000 tokens or 10 assistant replies.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+        },
+    },
+}
+
 TOOLS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "calculate",
-            "description": "Evaluate a mathematical expression.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "expression": {
-                        "type": "string",
-                        "description": "The math expression to evaluate.",
-                    }
-                },
-                "required": ["expression"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "ls",
-            "description": "List files in a directory.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "Directory path to list (default '.').",
-                    }
-                },
-                "required": [],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "cat",
-            "description": "Read the contents of a file.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "The file path to read.",
-                    }
-                },
-                "required": ["path"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "grep",
-            "description": "Search for lines matching a regex pattern in files.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "pattern": {
-                        "type": "string",
-                        "description": "The regex pattern to search for.",
-                    },
-                    "path": {
-                        "type": "string",
-                        "description": "File path or glob pattern to search.",
-                    },
-                },
-                "required": ["pattern", "path"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "compact",
-            "description": "Summarize the chat history to reduce token count. This tool should be called whenever the chat history is greater than 50000 tokens or 10 assistant replies.",
-            # a better description should also explain not just what the function does,
-            # but when to actually use the function as well
-            "parameters": {
-                "type": "object",
-                "properties": {},
-                "required": [],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "load_image",
-            "description": "Load a local image file so the LLM can see it.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "The path to the image file (JPEG, PNG, GIF, or WebP).",
-                    }
-                },
-                "required": ["path"],
-            },
-        },
-    },
+    tools.calculate.SCHEMA,
+    tools.ls.SCHEMA,
+    tools.cat.SCHEMA,
+    tools.grep.SCHEMA,
+    _COMPACT_SCHEMA,
+    tools.load_image.SCHEMA,
 ]
 
 

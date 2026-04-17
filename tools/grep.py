@@ -3,6 +3,28 @@ import re
 import glob as glob_module
 from tools import is_path_safe
 
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "grep",
+        "description": "Search for lines matching a regex pattern in files.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "type": "string",
+                    "description": "The regex pattern to search for.",
+                },
+                "path": {
+                    "type": "string",
+                    "description": "File path or glob pattern to search.",
+                },
+            },
+            "required": ["pattern", "path"],
+        },
+    },
+}
+
 
 def grep(pattern, path):
     """

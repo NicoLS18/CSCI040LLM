@@ -1,5 +1,23 @@
 """Arithmetic calculation tool for the docchat agent."""
 
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "calculate",
+        "description": "Evaluate a mathematical expression.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "expression": {
+                    "type": "string",
+                    "description": "The math expression to evaluate.",
+                }
+            },
+            "required": ["expression"],
+        },
+    },
+}
+
 
 def calculate(expression):
     """
