@@ -10,11 +10,14 @@ A pirate-themed document chat agent powered by the Groq LLM API. Chat naturally 
 
 ## Demo Video
 
-https://youtu.be/w6ZYI5ZImSQ
+Anytime you have a vidio/figure/codeblock/etc in your README,
+you need a 1-3 sentence title/explanation of the video so that the reader
+knows why they should care about the video/what to expect.
 
-## Usage Examples
+The code below should generate a thumbnail so that it is obvious to the reader what the video does.
+[![Video](https://img.youtube.com/vi/w6ZYI5ZImSQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=w6ZYI5ZImSQ)
 
-### eBay Scraper (`test_projects/ebayscraper`)
+Replace the ### headers with the explanation of why the example is interesting.
 
 ```
 chat> what files are in the ebay scraper project?
@@ -25,8 +28,6 @@ chat> /cat test_projects/ebayscraper/README.md
 ...
 ```
 
-### Custom Webpage (`test_projects/webpage`)
-
 ```
 chat> what html files does the webpage project have?
 Arrr, the webpage project be havin' these HTML files: animals.html, index.html, quiz1.html, visit.html, matey!
@@ -34,8 +35,6 @@ Arrr, the webpage project be havin' these HTML files: animals.html, index.html, 
 chat> /grep <title> test_projects/webpage/index.html
 <title>Zoo</title>
 ```
-
-### Markdown Compiler (`test_projects/markdown-compiler`)
 
 ```
 chat> what does the markdown compiler's pyproject.toml say?

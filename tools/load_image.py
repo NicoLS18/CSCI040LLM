@@ -4,6 +4,10 @@ import mimetypes
 import os
 
 
+# this was a good use of "memory management" tricks to pass in messages
+# here and then modify it in the function;
+# this is almost as clean of a way to implement this ec as possible;
+# nicley done!
 def load_image(path, messages):
     """
     Load a local image file and inject it into the messages list as a
@@ -12,6 +16,17 @@ def load_image(path, messages):
     Because tool results must be plain text, this function directly appends
     to the shared messages list rather than returning the image data.
 
+    # your doctests here are not great;
+    # I understand what they are doing,
+    # and I also understand the png file format enought to understand what
+    # b'\\x89PNG\\r\\n\\x1a\\n' + b'\\x00' * 8 means,
+    # but these tests are not at all obvious the way that tests should be;
+    # Better would have been to put a png/jpg/etc file in the test_data
+    # folder that you already have and make the test 
+    # of the same form as your ls/cat/grep tests;
+    # for now, I'm not awarding the extra credit,
+    # but you can get the ec on the next project by fixing these tests
+    # on the project04
     >>> import tempfile, os
     >>> tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
     >>> _ = tmp.write(b'\\x89PNG\\r\\n\\x1a\\n' + b'\\x00' * 8)

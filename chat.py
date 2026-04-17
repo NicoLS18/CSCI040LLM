@@ -14,6 +14,10 @@ import tools.load_image
 
 load_dotenv()
 
+# These tool schema definitions should be moved to the corresponding file
+# in the tools/ folder;
+# the general principle is that for any particular function,
+# we want all of the "stuff" about that function in "just one place"
 TOOLS = [
     {
         "type": "function",
@@ -91,7 +95,9 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "compact",
-            "description": "Summarize the chat history to reduce token count.",
+            "description": "Summarize the chat history to reduce token count. This tool should be called whenever the chat history is greater than 50000 tokens or 10 assistant replies.",
+            # a better description should also explain not just what the function does,
+            # but when to actually use the function as well
             "parameters": {
                 "type": "object",
                 "properties": {},
@@ -136,6 +142,15 @@ def _speak(client, text):
         with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp:
             tmp_path = tmp.name
             tmp.write(response.read())
+        # this code is not "wrong", but it's not very robust;
+        # you are relying on the user having certain programs installed,
+        # and people on other systems are likely not to have these installed
+        # better is to use a pure python solution 
+        # (playsound is an easy to use library)
+        # the advantage is that you can just list it in your requirements.txt
+        # or pyproject.toml and then it will install automatically,
+        # then anyone who pip installs your program is guaranteed to have access
+        # like the other extra credits, fix this for next submission and I'll award the points
         for player in ('afplay', 'aplay'):
             try:
                 subprocess.run([player, tmp_path], check=True,
@@ -244,6 +259,12 @@ class Chat:
             }
         ]
 
+    # ~~this was also supposed to be a tool that can be called automatically by the llm~~
+    # Ahh... I see now that it is a tool that can be called,
+    # but I was confused because it's not in the tools folder with the 
+    # other tools;
+    # like with the image ec, I'm not awarding the points now,
+    # but if you fix this then I'll award the points next time
     def compact(self):
         """Summarize the chat history and replace messages with the summary."""
         subagent = Chat(use_tools=False)
@@ -318,6 +339,12 @@ class Chat:
                 self.messages.append(
                     {'role': 'assistant', 'content': result}
                 )
+                # IMNSHO this is not the right location for the _speak function;
+                # instead, it should be the repl that is in charge of this task
+                # why?
+                # notice in your video that all the text gets printed after
+                # the audio finally plays;
+                # it would be better to print the text first and then play the audio
                 if self.tts:
                     _speak(self.client, result)
                 return result
@@ -431,8 +458,10 @@ def repl(temperature=0.8, debug=False, tts=False):
     """
     Run the interactive REPL supporting slash commands and LLM chat.
 
-    #monkey patch doctest
-    >>> def monkey_input(prompt, user_inputs=['/cat test_data/hello.txt', '/calculate 6 * 7']):
+    # I simplified your test cases here a bit to make them easier to read
+    # (I didn't actually run them though, so there might be typos)
+    # Overall, these are pretty decent tests
+    >>> def monkey_input(prompt):
     ...     try:
     ...         user_input = user_inputs.pop(0)
     ...         print(f'{prompt}{user_input}')
@@ -441,6 +470,8 @@ def repl(temperature=0.8, debug=False, tts=False):
     ...         raise KeyboardInterrupt
     >>> import builtins
     >>> builtins.input = monkey_input
+
+    >>> user_inputs = ['/cat test_data/hello.txt', '/calculate 6 * 7']
     >>> repl(temperature=0.0)
     chat> /cat test_data/hello.txt
     Hello, World!
@@ -448,29 +479,13 @@ def repl(temperature=0.8, debug=False, tts=False):
     42
     <BLANKLINE>
 
-    #monkey patch doctest for debug mode (slash commands unaffected by debug)
-    >>> def monkey_input_debug(prompt, user_inputs=['/cat test_data/hello.txt']):
-    ...     try:
-    ...         user_input = user_inputs.pop(0)
-    ...         print(f'{prompt}{user_input}')
-    ...         return user_input
-    ...     except IndexError:
-    ...         raise KeyboardInterrupt
-    >>> builtins.input = monkey_input_debug
+    >>> user_inputs = ['/cat test_data/hello.txt']
     >>> repl(temperature=0.0, debug=True)
     chat> /cat test_data/hello.txt
     Hello, World!
     <BLANKLINE>
 
-    #monkey patch doctest for LLM chat path
-    >>> def monkey_input_chat(prompt, user_inputs=['say exactly the word: Arrr']):
-    ...     try:
-    ...         user_input = user_inputs.pop(0)
-    ...         print(f'{prompt}{user_input}')
-    ...         return user_input
-    ...     except IndexError:
-    ...         raise KeyboardInterrupt
-    >>> builtins.input = monkey_input_chat
+    >>> user_inputs=['say exactly the word: Arrr']
     >>> repl(temperature=0.0)  # doctest: +ELLIPSIS
     chat> say exactly the word: Arrr
     ...
@@ -504,8 +519,10 @@ def main():
     parser = argparse.ArgumentParser(description='Docchat: chat with documents')
     parser.add_argument('message', nargs='?', help='Message to send to the LLM')
     parser.add_argument('--debug', action='store_true', help='Print tool calls')
+    # I like that you used a flag here for --tts
     parser.add_argument('--tts', action='store_true', help='Read responses aloud using TTS')
     args = parser.parse_args()
+    # this is a nice, clean way to do the command line message, good job
     if args.message:
         chat = Chat(debug=args.debug, tts=args.tts)
         print(chat.send_message(args.message))
