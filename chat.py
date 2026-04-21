@@ -15,6 +15,7 @@ import tools.doctests
 import tools.write_file
 import tools.write_files
 import tools.rm
+import tools.pip_install
 
 load_dotenv()
 
@@ -42,6 +43,7 @@ TOOLS = [
     tools.write_file.SCHEMA,
     tools.write_files.SCHEMA,
     tools.rm.SCHEMA,
+    tools.pip_install.SCHEMA,
 ]
 
 
@@ -128,6 +130,8 @@ def _execute_tool(name, args, messages=None):
         return tools.write_files.write_files(args['files'], args['commit_message'])
     elif name == 'rm':
         return tools.rm.rm(args['path'])
+    elif name == 'pip_install':
+        return tools.pip_install.pip_install(args['library_name'])
     return f'Error: unknown tool {name}'
 
 
@@ -158,6 +162,8 @@ class Chat:
     True
     >>> Chat(tts=True).tts
     True
+    >>> Chat(ralph=True).ralph
+    True
 
     >>> class FakeMsg:
     ...     role = 'user'
@@ -168,10 +174,11 @@ class Chat:
     True
     '''
 
-    def __init__(self, debug=False, use_tools=True, tts=False):
-        """Initialize the chat agent with optional debug, tool, and TTS flags."""
+    def __init__(self, debug=False, use_tools=True, tts=False, ralph=False):
+        """Initialize the chat agent with optional debug, tool, TTS, and ralph flags."""
         self.debug = debug
         self.tts = tts
+        self.ralph = ralph
         self._tools = TOOLS if use_tools else None
         self.client = Groq()
         self.messages = [
@@ -262,6 +269,11 @@ class Chat:
                         'tool_call_id': tool_call.id,
                         'content': result,
                     })
+                    if self.ralph and name in ('write_file', 'write_files') and '***Test Failed***' in result:
+                        self.messages.append({
+                            'role': 'user',
+                            'content': 'The doctests failed. Fix the code and try again.',
+                        })
             else:
                 result = choice.message.content
                 self.messages.append(
@@ -435,7 +447,7 @@ def _startup_checks():
     return extra_messages
 
 
-def repl(temperature=0.8, debug=False, tts=False):
+def repl(temperature=0.8, debug=False, tts=False, ralph=False):
     """
     Run the interactive REPL supporting slash commands and LLM chat.
 
@@ -482,7 +494,7 @@ def repl(temperature=0.8, debug=False, tts=False):
     startup = _startup_checks()
     if startup is None:
         return
-    chat = Chat(debug=debug, tts=tts)
+    chat = Chat(debug=debug, tts=tts, ralph=ralph)
     chat.messages.extend(startup)
     try:
         while True:
@@ -506,13 +518,14 @@ def main():
     parser.add_argument('--debug', action='store_true', help='Print tool calls')
     # I like that you used a flag here for --tts
     parser.add_argument('--tts', action='store_true', help='Read responses aloud using TTS')
+    parser.add_argument('--ralph', action='store_true', help='Retry write_file until doctests pass')
     args = parser.parse_args()
     # this is a nice, clean way to do the command line message, good job
     if args.message:
-        chat = Chat(debug=args.debug, tts=args.tts)
+        chat = Chat(debug=args.debug, tts=args.tts, ralph=args.ralph)
         print(chat.send_message(args.message))
     else:
-        repl(debug=args.debug, tts=args.tts)
+        repl(debug=args.debug, tts=args.tts, ralph=args.ralph)
 
 
 if __name__ == '__main__':
