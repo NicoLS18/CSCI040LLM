@@ -125,7 +125,12 @@ def _execute_tool(name, args, messages=None):
     elif name == 'doctests':
         return tools.doctests.doctests(args['path'])
     elif name == 'write_file':
-        return tools.write_file.write_file(args['path'], args['contents'], args['commit_message'])
+        return tools.write_file.write_file(
+            args['path'],
+            args['commit_message'],
+            contents=args.get('contents'),
+            diff=args.get('diff'),
+        )
     elif name == 'write_files':
         return tools.write_files.write_files(args['files'], args['commit_message'])
     elif name == 'rm':
@@ -359,7 +364,7 @@ def _handle_slash_command(user_input, chat=None):
     elif cmd == 'write_file':
         if len(args) < 3:
             return 'Error: write_file requires a path, contents, and commit message'
-        return tools.write_file.write_file(args[0], args[1], ' '.join(args[2:]))
+        return tools.write_file.write_file(args[0], ' '.join(args[2:]), contents=args[1])
     elif cmd == 'rm':
         if not args:
             return 'Error: rm requires a file path'
