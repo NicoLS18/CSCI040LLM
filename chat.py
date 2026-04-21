@@ -11,6 +11,10 @@ import tools.ls
 import tools.cat
 import tools.grep
 import tools.load_image
+import tools.doctests
+import tools.write_file
+import tools.write_files
+import tools.rm
 
 load_dotenv()
 
@@ -34,6 +38,10 @@ TOOLS = [
     tools.grep.SCHEMA,
     _COMPACT_SCHEMA,
     tools.load_image.SCHEMA,
+    tools.doctests.SCHEMA,
+    tools.write_file.SCHEMA,
+    tools.write_files.SCHEMA,
+    tools.rm.SCHEMA,
 ]
 
 
@@ -112,6 +120,14 @@ def _execute_tool(name, args, messages=None):
         if messages is None:
             return 'Error: load_image requires access to the messages list'
         return tools.load_image.load_image(args['path'], messages)
+    elif name == 'doctests':
+        return tools.doctests.doctests(args['path'])
+    elif name == 'write_file':
+        return tools.write_file.write_file(args['path'], args['contents'], args['commit_message'])
+    elif name == 'write_files':
+        return tools.write_files.write_files(args['files'], args['commit_message'])
+    elif name == 'rm':
+        return tools.rm.rm(args['path'])
     return f'Error: unknown tool {name}'
 
 
@@ -324,6 +340,18 @@ def _handle_slash_command(user_input, chat=None):
         if chat is None:
             return 'Error: load_image requires an active chat session'
         return tools.load_image.load_image(args[0], chat.messages)
+    elif cmd == 'doctests':
+        if not args:
+            return 'Error: doctests requires a file path'
+        return tools.doctests.doctests(args[0])
+    elif cmd == 'write_file':
+        if len(args) < 3:
+            return 'Error: write_file requires a path, contents, and commit message'
+        return tools.write_file.write_file(args[0], args[1], ' '.join(args[2:]))
+    elif cmd == 'rm':
+        if not args:
+            return 'Error: rm requires a file path'
+        return tools.rm.rm(args[0])
     return f'Error: unknown command {cmd}'
 
 
@@ -349,7 +377,7 @@ def _make_completer():
     >>> completer('nonexistent_path_xyz', 0) is None
     True
     """
-    commands = ['calculate', 'cat', 'compact', 'grep', 'load_image', 'ls']
+    commands = ['calculate', 'cat', 'compact', 'doctests', 'grep', 'load_image', 'ls', 'rm', 'write_file', 'write_files']
 
     def completer(text, state):
         if text.startswith('/'):
@@ -364,6 +392,47 @@ def _make_completer():
             return None
 
     return completer
+
+
+def _startup_checks():
+    """
+    Check for .git folder and optionally load AGENTS.md.
+
+    Returns a list of system/user messages to prepend, or None if startup fails.
+
+    >>> import os, tempfile
+    >>> orig = os.getcwd()
+    >>> tmp = tempfile.mkdtemp()
+    >>> os.chdir(tmp)
+    >>> _startup_checks() is None
+    Error: no .git folder found in current directory. Please run docchat from a git repo.
+    True
+    >>> import subprocess
+    >>> _ = subprocess.run(['git', 'init'], capture_output=True, cwd=tmp)
+    >>> _startup_checks()
+    []
+    >>> with open(os.path.join(tmp, 'AGENTS.md'), 'w') as f:
+    ...     _ = f.write('Be helpful.')
+    >>> msgs = _startup_checks()
+    >>> any('AGENTS.md' in str(m) for m in msgs)
+    True
+    >>> os.chdir(orig)
+    """
+    if not os.path.isdir('.git'):
+        print('Error: no .git folder found in current directory. Please run docchat from a git repo.')
+        return None
+    extra_messages = []
+    if os.path.isfile('AGENTS.md'):
+        content = tools.cat.cat('AGENTS.md')
+        extra_messages.append({
+            'role': 'user',
+            'content': f'[AGENTS.md loaded]\n{content}',
+        })
+        extra_messages.append({
+            'role': 'assistant',
+            'content': 'I have read AGENTS.md and will follow its instructions.',
+        })
+    return extra_messages
 
 
 def repl(temperature=0.8, debug=False, tts=False):
@@ -410,7 +479,11 @@ def repl(temperature=0.8, debug=False, tts=False):
         readline.parse_and_bind('tab: complete')
     except ImportError:
         pass
+    startup = _startup_checks()
+    if startup is None:
+        return
     chat = Chat(debug=debug, tts=tts)
+    chat.messages.extend(startup)
     try:
         while True:
             user_input = input('chat> ')

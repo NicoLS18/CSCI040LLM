@@ -44,3 +44,75 @@ Arrr, the pyproject.toml be definin' the project name, version, dependencies, an
 
 chat> /ls test_projects/markdown-compiler/markdown_compiler
 ```
+
+## Agent File Creation Example
+
+This example shows the agent creating a new Python file, committing it to git, and running its doctests automatically.
+
+```
+chat> create a file called greet.py that has a function greet(name) returning 'Hello, <name>!' with a doctest
+[tool] /write_file greet.py ...
+Trying:
+    greet('Alice')
+Expecting:
+    'Hello, Alice!'
+ok
+1 items passed all tests:
+  1 tests in greet.greet
+1 passed and 0 failed.
+Arrr, I've written greet.py with a greet() function and all doctests be passin', matey!
+
+chat> /ls .
+...
+greet.py
+...
+
+$ git log --oneline -3
+a1b2c3d [docchat] add greet function with doctest
+...
+
+$ cat greet.py
+def greet(name):
+    """
+    Return a greeting string.
+
+    >>> greet('Alice')
+    'Hello, Alice!'
+    """
+    return f'Hello, {name}!'
+```
+
+## Agent File Deletion Example
+
+This example shows the agent removing a file and committing the deletion.
+
+```
+chat> delete greet.py since we no longer need it
+[tool] /rm greet.py
+Removed and committed: greet.py
+Arrr, greet.py has been sent to Davy Jones' locker and the deed be committed to git, matey!
+
+$ git log --oneline -2
+b2c3d4e [docchat] rm greet.py
+a1b2c3d [docchat] add greet function with doctest
+```
+
+## Agent Multi-File Creation Example
+
+This example shows the agent writing multiple files in a single git commit.
+
+```
+chat> create two files: hello.txt with "Hello World" and bye.txt with "Goodbye World", commit as "add greeting files"
+[tool] /write_files ...
+Written and committed: hello.txt, bye.txt
+Arrr, both files be written and committed in one fell swoop, matey!
+
+$ git log --oneline -1
+c3d4e5f [docchat] add greeting files
+
+$ cat hello.txt
+Hello World
+
+$ cat bye.txt
+Goodbye World
+```
