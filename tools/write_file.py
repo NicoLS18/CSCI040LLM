@@ -23,11 +23,11 @@ SCHEMA = {
                 },
                 "contents": {
                     "type": "string",
-                    "description": "Full text content to write into the file (mutually exclusive with diff).",
+                    "description": "Full text to write (mutually exclusive with diff).",
                 },
                 "diff": {
                     "type": "string",
-                    "description": "Unified diff to apply to the existing file (mutually exclusive with contents).",
+                    "description": "Unified diff to apply to the file (exclusive with contents).",
                 },
                 "commit_message": {
                     "type": "string",

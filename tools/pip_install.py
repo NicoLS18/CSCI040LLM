@@ -24,7 +24,8 @@ def pip_install(library_name):
     """
     Install a Python library with pip3 and return the output.
 
-    >>> 'successfully installed' in pip_install('pip').lower() or 'already satisfied' in pip_install('pip').lower()
+    >>> result = pip_install('pip').lower()
+    >>> 'successfully installed' in result or 'already satisfied' in result
     True
     """
     result = subprocess.run(
