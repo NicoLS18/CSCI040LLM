@@ -82,6 +82,33 @@ def greet(name):
     return f'Hello, {name}!'
 ```
 
+## Agent File Modification Example
+
+This example shows the agent updating an existing file, committing the change, and running doctests automatically.
+
+```
+chat> update greet.py so the greet function also accepts an optional exclamation mark
+[tool] /write_file greet.py ...
+Trying:
+    greet('Alice')
+Expecting:
+    'Hello, Alice!'
+ok
+Trying:
+    greet('Alice', excited=True)
+Expecting:
+    'Hello, Alice!!'
+ok
+2 items passed all tests:
+  2 tests in greet.greet
+2 passed and 0 failed.
+Arrr, greet.py has been updated and all doctests be passin', matey!
+
+$ git log --oneline -2
+d4e5f6a [docchat] add excited parameter to greet function
+a1b2c3d [docchat] add greet function with doctest
+```
+
 ## Agent File Deletion Example
 
 This example shows the agent removing a file and committing the deletion.
